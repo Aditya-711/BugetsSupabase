@@ -12,6 +12,3 @@ struct Budget: Codable, Identifiable {
     let limit: Double
 }
 
-class BudgetStore: ObservableObject {
-    @Published var budgets: [Budget] = []
-}

@@ -12,13 +12,13 @@ import Supabase
 struct BugetsSupabaseApp: App {
     
     
-    @StateObject var budgetStore: BudgetStore = BudgetStore()
+   
     
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 BudgetListScreen()
-                    .environmentObject(budgetStore)
+                    
             }
         }
     }

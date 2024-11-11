@@ -16,7 +16,6 @@ struct AddBudgetScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.supabaseClient) private var supabaseClient
     
-    @EnvironmentObject var budgetStore: BudgetStore
     
     private func save() async {
         let budget = Budget(name: name, limit: limit)
@@ -25,7 +24,6 @@ struct AddBudgetScreen: View {
                 .from("budgets")
                 .insert(budget)
                 .execute()
-            budgetStore.budgets.append(budget)
         } catch {
             print(error)
         }
@@ -47,7 +45,7 @@ struct AddBudgetScreen: View {
                 Button("Save") {
                     Task {
                         await save()
-                        //onSave() // more better method would be to pass new budget inside this closure and in BudgetListScreen access it and append it to budgets[]
+                        onSave() // more better method would be to pass new budget inside this closure and in BudgetListScreen access it and append it to budgets[]
                         dismiss()
                     }
                    
@@ -81,6 +79,7 @@ struct AddBudgetScreen: View {
     In BudgetListScreen() pass the budgets[]
     AddBudgetScreen(budgets: $budgets)
  
- Option 3. Use
+ Option 3. Use BudgetStore using Observable Object and EnvironmentObject
+ Used in BudgetStoreApproch branch in Git
 */
 
