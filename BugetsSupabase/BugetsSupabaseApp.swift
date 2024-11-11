@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import Supabase
 
 @main
 struct BugetsSupabaseApp: App {
+    
+    
+    @StateObject var budgetStore: BudgetStore = BudgetStore()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                BudgetListScreen()
+                    .environmentObject(budgetStore)
+            }
         }
     }
 }

@@ -6,3 +6,12 @@
 //
 
 import Foundation
+struct Budget: Codable, Identifiable {
+    var id: Int?
+    let name: String
+    let limit: Double
+}
+
+class BudgetStore: ObservableObject {
+    @Published var budgets: [Budget] = []
+}

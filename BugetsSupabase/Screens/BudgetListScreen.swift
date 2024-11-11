@@ -11,10 +11,13 @@ struct BudgetListScreen: View {
     
     @Environment(\.supabaseClient) private var supabaseClient
     @State private var budgets: [Budget] = []
+    @State private var isPresented: Bool = false
+    
+    @EnvironmentObject var budgetStore: BudgetStore
     
     private func fetchBudgets() async {
         do {
-            budgets = try await supabaseClient
+            budgetStore.budgets = try await supabaseClient
                 .from("budgets")
                 .select()
                 .execute()
@@ -25,21 +28,34 @@ struct BudgetListScreen: View {
         
     }
     var body: some View {
-        List {
-            ForEach(budgets) { budget in
-                BudgetCellView(budget: budget)
+       
+            List {
+                ForEach(budgetStore.budgets) { budget in
+                    BudgetCellView(budget: budget)
+                }
             }
-        }
         .task {
             await fetchBudgets()
         }
         .navigationTitle("Budgets")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Add new") {
+                    isPresented = true
+                }
+            }
+        }
+        .sheet(isPresented: $isPresented) {
+            NavigationStack {
+                AddBudgetScreen {}
+            }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        BudgetListScreen()
+       // BudgetListScreen(budgetStore: BudgetStore())
     }
         //.environment(\.supabaseClient, .development)
 }
